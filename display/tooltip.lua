@@ -52,7 +52,6 @@ local function hook_tooltip(tooltip)
     hooksecurefunc(tooltip, "SetInventoryItem", hook)
     hooksecurefunc(tooltip, "SetInventoryItemByID", hook)
     hooksecurefunc(tooltip, "SetItemByID", hook)
-    hooksecurefunc(tooltip, "SetItemByID", hook)
     hooksecurefunc(tooltip, "SetQuestItem", hook)
     hooksecurefunc(tooltip, "SetQuestLogItem", hook)
     -- TODO: add missing/needed hooks
