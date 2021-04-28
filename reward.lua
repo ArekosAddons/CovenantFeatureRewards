@@ -56,8 +56,16 @@ function RewardMixin:CanCollect()
         local appearanceID = C_TransmogCollection.GetItemInfo(self.itemID)
         local sources = C_TransmogCollection.GetAppearanceSources(appearanceID)
         if sources and next(sources) then
-            canCollect = true
+            local spec = GetItemSpecInfo(self.itemID)
+
+            if type(spec) == "table" and #spec == 0 then
+                -- will not drop
+                canCollect = false
+            else
+                canCollect = true
+            end
         else
+            -- can't learn appearance
             canCollect = false
         end
 
@@ -99,6 +107,8 @@ function CFR:CreateReward(rewardType, data)
 
     data.itemLink = RETRIEVING_ITEM_INFO
     data.itemLink = "Interface\\Icons\\Inv_misc_questionmark"
+
+    GetItemSpecInfo(self.itemID) -- pre load spec info
 
     local item = Item:CreateFromItemID(data.itemID)
     item:ContinueOnItemLoad(function()
