@@ -108,7 +108,9 @@ function CFR:CreateReward(rewardType, data)
     data.itemLink = RETRIEVING_ITEM_INFO
     data.itemLink = "Interface\\Icons\\Inv_misc_questionmark"
 
-    GetItemSpecInfo(self.itemID) -- pre load spec info
+    if data.type == REWARD_TYPE_WARDROBE then
+        GetItemSpecInfo(data.itemID) -- pre load spec info
+    end
 
     local item = Item:CreateFromItemID(data.itemID)
     item:ContinueOnItemLoad(function()
