@@ -15,10 +15,10 @@ CFR.REWARD_TYPES = {
     QUEST = REWARD_TYPE_QUEST,
 }
 
-local KYRIAN = "K"
-local NECROLORD = "NL"
-local NIGHTFAE = "NF"
-local VENTHYR = "V"
+local KYRIAN = Enum.CovenantType.Kyrian
+local NECROLORD = Enum.CovenantType.Necrolord
+local NIGHTFAE = Enum.CovenantType.NightFae
+local VENTHYR = Enum.CovenantType.Venthyr
 
 CFR.COVENANTS = {
     KYRIAN = KYRIAN,

@@ -25,8 +25,9 @@ function CFR:GetCovenantForItem(itemID)
 end
 
 function CFR:GetPlayerCovenant()
-     -- TODO: get player covenant
-    return CFR.COVENANTS.NIGHTFAE
+    local covenantID = C_Covenants.GetActiveCovenantID()
+
+    return covenantID
 end
 
 local rewards_cache = setmetatable({}, { __meta = "v"})
