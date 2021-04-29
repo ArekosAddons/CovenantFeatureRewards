@@ -41,21 +41,31 @@ function CFR:GetRewards(itemID)
     rewards = {
         specific = {},
         specific_known = 0,
+        specific_unobtainable = {},
+        specific_unobtainable_known = 0,
         shared = {},
         shared_known = 0,
-        covenant = covenant
+        shared_unobtainable = {},
+        shared_unobtainable_known = 0,
+        covenant = covenant,
     }
 
     -- rewards available to only specific covenants
     if covenant then
         for _, reward in pairs(CFR.covenant_specific[covenant]) do
             if (reward.theme == true) or (not reward.theme and covenant == theme) or (reward.theme == theme) then
-                if reward:CanCollect() then
+                if reward:CanObtain() then
                     if reward:IsCollected() then
                         rewards.specific_known = rewards.specific_known + 1
                     end
 
                     tinsert(rewards.specific, reward)
+                else
+                    if reward:IsCollected() then
+                        rewards.specific_unobtainable_known = rewards.specific_unobtainable_known + 1
+                    end
+
+                    tinsert(rewards.specific_unobtainable, reward)
                 end
             end
         end
@@ -64,12 +74,18 @@ function CFR:GetRewards(itemID)
     -- rewards available to all covenants
     for _, reward in pairs(CFR.shared_rewards) do
         if reward.theme == theme then
-            if reward:CanCollect() then
+            if reward:CanObtain() then
                 if reward:IsCollected() then
                     rewards.shared_known = rewards.shared_known + 1
                 end
 
                 tinsert(rewards.shared, reward)
+            else
+                if reward:IsCollected() then
+                    rewards.shared_unobtainable_known = rewards.shared_unobtainable_known + 1
+                end
+
+                tinsert(rewards.shared_unobtainable, reward)
             end
         end
     end

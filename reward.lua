@@ -47,30 +47,45 @@ function RewardMixin:IsCollected()
     end
 end
 
-local canCollectCache = {}
-function RewardMixin:CanCollect()
+local isScheduled = false
+local function resetRewardsCache()
+    CFR:ResetCaches()
+    isScheduled = false
+end
+
+local canObtainCache = {}
+function RewardMixin:CanObtain()
     if self.type == REWARD_TYPE_WARDROBE then
-        local canCollect = canCollectCache[self.itemID]
-        if canCollect ~= nil then return canCollect end
+        local canObtain = canObtainCache[self.itemID]
+        if canObtain ~= nil then return canObtain end
 
         local appearanceID = C_TransmogCollection.GetItemInfo(self.itemID)
         local sources = C_TransmogCollection.GetAppearanceSources(appearanceID)
         if sources and next(sources) then
             local spec = GetItemSpecInfo(self.itemID)
 
-            if type(spec) == "table" and #spec == 0 then
-                -- will not drop
-                canCollect = false
+            if type(spec) == "table" then
+                if #spec == 0 then
+                    -- will not drop
+                    canObtain = false
+                else
+                    canObtain = true
+                end
             else
-                canCollect = true
+                -- skip caching when nil and reset rewards cache
+                if not isScheduled then
+                    isScheduled = true
+                    C_Timer.After(1, resetRewardsCache)
+                end
+                return true
             end
         else
             -- can't learn appearance
-            canCollect = false
+            canObtain = false
         end
 
-        canCollectCache[self.itemID] = canCollect
-        return canCollect
+        canObtainCache[self.itemID] = canObtain
+        return canObtain
     end
 
     return true
@@ -107,10 +122,6 @@ function CFR:CreateReward(rewardType, data)
 
     data.itemLink = RETRIEVING_ITEM_INFO
     data.itemLink = "Interface\\Icons\\Inv_misc_questionmark"
-
-    if data.type == REWARD_TYPE_WARDROBE then
-        GetItemSpecInfo(data.itemID) -- pre load spec info
-    end
 
     local item = Item:CreateFromItemID(data.itemID)
     item:ContinueOnItemLoad(function()

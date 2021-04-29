@@ -31,6 +31,31 @@ local function render_content(tooltip, itemID)
         end
     end
 
+    if IsShiftKeyDown() then
+        local num_specific_unobtainable_rewards = #rewards.specific_unobtainable
+        local num_specific_unobtainable_known = rewards.specific_unobtainable_known
+
+        if num_specific_unobtainable_rewards > 0 then
+            local uur_line = string.format(L.COVENANT_REWARDS_UNOBTAINABLE_DD, num_specific_unobtainable_known, num_specific_unobtainable_rewards)
+            tooltip:AddLine(uur_line)
+            for _, reward in ipairs(rewards.specific_unobtainable) do
+                reward:Render(tooltip, covenant)
+            end
+        end
+
+
+        local num_shared_unobtainable_rewards = #rewards.shared_unobtainable
+        local num_shared_unobtainable_known = rewards.shared_unobtainable_known
+
+        if num_shared_unobtainable_rewards > 0 then
+            local ssr_line = string.format(L.SHARED_REWARDS_UNOBTAINABLE_DD, num_shared_unobtainable_known, num_shared_unobtainable_rewards)
+            tooltip:AddLine(ssr_line)
+            for _, reward in ipairs(rewards.shared_unobtainable) do
+                reward:Render(tooltip, covenant)
+            end
+        end
+    end
+
     tooltip:Show()
 end
 
