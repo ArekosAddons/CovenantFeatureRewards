@@ -25,4 +25,5 @@ data.lua
 
 core.lua
 
+display/tooltip.lua
 display/tooltip_item.lua
