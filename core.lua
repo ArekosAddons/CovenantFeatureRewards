@@ -1,14 +1,13 @@
 local ADDDONNAME, CFR = ...
 
 
-function CFR:GetThemeForItem(itemID)
-    return self.kyrian_items[itemID]
-        or self.necrolord_items[itemID]
-        or self.nightfae_items[itemID]
-        or self.venthyr_items[itemID]
+function CFR:GetPlayerCovenant()
+    local covenantID = C_Covenants.GetActiveCovenantID()
+
+    return covenantID
 end
 
-function CFR:HasReward(itemID)
+function CFR:HasItemReward(itemID)
     return not not self:GetThemeForItem(itemID)
 end
 
@@ -24,19 +23,20 @@ function CFR:GetCovenantForItem(itemID)
     end
 end
 
-function CFR:GetPlayerCovenant()
-    local covenantID = C_Covenants.GetActiveCovenantID()
-
-    return covenantID
+function CFR:GetThemeForItem(itemID)
+    return self.kyrian_items[itemID]
+        or self.necrolord_items[itemID]
+        or self.nightfae_items[itemID]
+        or self.venthyr_items[itemID]
 end
 
-local rewards_cache = setmetatable({}, { __meta = "v"})
-function CFR:GetRewards(itemID)
-    local rewards = rewards_cache[itemID]
-    if rewards ~= nil then return rewards end
+end
 
-    local covenant = CFR:GetCovenantForItem(itemID)
-    local theme = CFR:GetThemeForItem(itemID)
+
+local rewards_cache = setmetatable({}, { __meta = "v"})
+function CFR:GetRewards(covenant, theme)
+    local rewards = rewards_cache[(covenant or "") .. (theme or "")]
+    if rewards ~= nil then return rewards end
 
     rewards = {
         specific = {},
@@ -90,10 +90,26 @@ function CFR:GetRewards(itemID)
         end
     end
 
-    rewards_cache[itemID] = rewards
+    rewards_cache[(covenant or "") .. (theme or "")] = rewards
+    return rewards
+end
+
+local item_cache = setmetatable({}, { __meta = "v"})
+function CFR:GetRewardsForItem(itemID)
+    local rewards = item_cache[itemID]
+    if rewards ~= nil then return rewards end
+
+    local covenant = CFR:GetCovenantForItem(itemID)
+    local theme = CFR:GetThemeForItem(itemID)
+
+    rewards = self:GetRewards(covenant, theme)
+    item_cache[itemID] = rewards
+    return rewards
+end
     return rewards
 end
 
 function CFR:ResetCaches()
     wipe(rewards_cache)
+    wipe(item_cache)
 end

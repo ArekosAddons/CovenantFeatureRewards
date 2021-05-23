@@ -123,6 +123,8 @@ function CFR:CreateReward(rewardType, data)
     data.itemLink = RETRIEVING_ITEM_INFO
     data.itemLink = "Interface\\Icons\\Inv_misc_questionmark"
 
+    GetItemSpecInfo(data.itemID)
+
     local item = Item:CreateFromItemID(data.itemID)
     item:ContinueOnItemLoad(function()
         data.itemLink = item:GetItemLink()
