@@ -77,6 +77,15 @@ function RewardMixin:CanObtain()
     return true
 end
 
+function RewardMixin:AvailableForVisitor(visitor)
+    local visitors = self.visitors
+    if visitors then
+        return visitors[visitor]
+    else
+        return false
+    end
+end
+
 function RewardMixin:GetRewardString()
     return string.format("%s (%s)", self.itemLink, self.type)
 end
