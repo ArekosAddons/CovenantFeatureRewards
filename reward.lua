@@ -3,29 +3,15 @@ local ADDONNAME, CFR = ...
 local L = LibStub("AceLocale-3.0"):GetLocale(ADDONNAME)
 
 
-local REWARD_TYPE_PET = PET
-local REWARD_TYPE_MOUNT = RAF_BENEFIT5 -- MOUNT translates to the verb, the noun is RAF_BENEFIT5
-local REWARD_TYPE_WARDROBE = WARDROBE
-local REWARD_TYPE_QUEST = "Quest"
+local REWARD_TYPE_PET = CFR.REWARD_TYPES.PET
+local REWARD_TYPE_MOUNT = CFR.REWARD_TYPES.MOUNT
+local REWARD_TYPE_WARDROBE = CFR.REWARD_TYPES.WARDROBE
+local REWARD_TYPE_QUEST = CFR.REWARD_TYPES.QUEST
 
-CFR.REWARD_TYPES = {
-    PET = REWARD_TYPE_PET,
-    MOUNT = REWARD_TYPE_MOUNT,
-    WARDROBE = REWARD_TYPE_WARDROBE,
-    QUEST = REWARD_TYPE_QUEST,
-}
-
-local KYRIAN = Enum.CovenantType.Kyrian
-local NECROLORD = Enum.CovenantType.Necrolord
-local NIGHTFAE = Enum.CovenantType.NightFae
-local VENTHYR = Enum.CovenantType.Venthyr
-
-CFR.COVENANTS = {
-    KYRIAN = KYRIAN,
-    NECROLORD = NECROLORD,
-    NIGHTFAE = NIGHTFAE,
-    VENTHYR = VENTHYR,
-}
+local KYRIAN = CFR.COVENANTS.KYRIAN
+local NECROLORD = CFR.COVENANTS.NECROLORD
+local NIGHTFAE = CFR.COVENANTS.NIGHTFAE
+local VENTHYR = CFR.COVENANTS.VENTHYR
 
 
 local RewardMixin = {}
@@ -103,9 +89,15 @@ function RewardMixin:GetConditionString(covenant)
         else
             return L.CATALYSTS_M
         end
-    else
-        return "NYI"
+    elseif covenant == VENTHYR then
+        return "NIY"
+    elseif covenant == KYRIAN then
+        return "NIY"
+    elseif covenant == NECROLORD then
+        return "NIY"
     end
+
+    return ""
 end
 
 local TEXTUREINFO = {margin={left=5, top=2, right=2}}
@@ -123,12 +115,12 @@ function CFR:CreateReward(rewardType, data)
     data.itemLink = RETRIEVING_ITEM_INFO
     data.itemLink = "Interface\\Icons\\Inv_misc_questionmark"
 
-    GetItemSpecInfo(data.itemID)
-
     local item = Item:CreateFromItemID(data.itemID)
     item:ContinueOnItemLoad(function()
         data.itemLink = item:GetItemLink()
         data.itemIcon = item:GetItemIcon()
+
+        GetItemSpecInfo(data.itemID)
     end)
 
     return Mixin(data, RewardMixin)
