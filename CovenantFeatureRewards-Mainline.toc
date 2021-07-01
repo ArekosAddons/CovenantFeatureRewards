@@ -1,4 +1,4 @@
-## Interface: 90005
+## Interface: 90100
 ## Title: Covenant feature: Rewards
 ## Notes: Shows which rewards you can get from your covenant feature
 ## Version: 0.1.5
