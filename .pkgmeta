@@ -11,3 +11,4 @@ manual-changelog:
 
 ignore:
   - CHANGELOG.md
+  - CovenantFeatureRewards.toc
