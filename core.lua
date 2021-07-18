@@ -35,7 +35,7 @@ end
 
 local rewards_cache = setmetatable({}, { __meta = "v"})
 function CFR:GetRewards(covenant, theme)
-    local rewards = rewards_cache[(covenant or "") .. (theme or "")]
+    local rewards = rewards_cache[(covenant or "-") .. (theme or "-")]
     if rewards ~= nil then return rewards end
 
     rewards = {
@@ -43,10 +43,12 @@ function CFR:GetRewards(covenant, theme)
         specific_known = 0,
         specific_unobtainable = {},
         specific_unobtainable_known = 0,
+        specific_extra = {},
         shared = {},
         shared_known = 0,
         shared_unobtainable = {},
         shared_unobtainable_known = 0,
+        shared_extra = {},
         covenant = covenant,
     }
 
@@ -55,11 +57,15 @@ function CFR:GetRewards(covenant, theme)
         for _, reward in pairs(CFR.covenant_specific[covenant]) do
             if (reward.theme == true) or (not reward.theme and covenant == theme) or (reward.theme == theme) then
                 if reward:CanObtain() then
-                    if reward:IsCollected() then
+                    local isCollected, canCollectMore = reward:IsCollected()
+                    if isCollected then
                         rewards.specific_known = rewards.specific_known + 1
                     end
 
                     tinsert(rewards.specific, reward)
+                    if canCollectMore then
+                        tinsert(rewards.specific_extra)
+                    end
                 else
                     if reward:IsCollected() then
                         rewards.specific_unobtainable_known = rewards.specific_unobtainable_known + 1
@@ -75,11 +81,15 @@ function CFR:GetRewards(covenant, theme)
     for _, reward in pairs(CFR.shared_rewards) do
         if reward.theme == theme then
             if reward:CanObtain() then
-                if reward:IsCollected() then
+                local isCollected, canCollectMore = reward:IsCollected()
+                if isCollected then
                     rewards.shared_known = rewards.shared_known + 1
                 end
 
                 tinsert(rewards.shared, reward)
+                if canCollectMore then
+                    tinsert(rewards.shared_extra)
+                end
             else
                 if reward:IsCollected() then
                     rewards.shared_unobtainable_known = rewards.shared_unobtainable_known + 1
@@ -90,7 +100,7 @@ function CFR:GetRewards(covenant, theme)
         end
     end
 
-    rewards_cache[(covenant or "") .. (theme or "")] = rewards
+    rewards_cache[(covenant or "-") .. (theme or "-")] = rewards
     return rewards
 end
 

@@ -16,21 +16,26 @@ local VENTHYR = CFR.COVENANTS.VENTHYR
 
 local RewardMixin = {}
 
+--- RewardMixin:IsCollected()
+-- return isCollected<boolean>, canCollectMore<boolean>
 function RewardMixin:IsCollected()
     if self.type == REWARD_TYPE_MOUNT then
-        return select(11, C_MountJournal.GetMountInfoByID(self.mountID))
+        return select(11, C_MountJournal.GetMountInfoByID(self.mountID)), false
     elseif self.type == REWARD_TYPE_PET then
-        return C_PetJournal.GetNumCollectedInfo(self.speciesID) > 0
+        local numCollected, limit = C_PetJournal.GetNumCollectedInfo(self.speciesID)
+        return numCollected > 0, numCollected < limit
     elseif self.type == REWARD_TYPE_WARDROBE then
         local _, sourceID = C_TransmogCollection.GetItemInfo(self.itemID)
         if sourceID then
             local _, _, _, _, isCollected = C_TransmogCollection.GetAppearanceSourceInfo(sourceID)
 
-            return isCollected
+            return isCollected, false
         end
     elseif self.type == REWARD_TYPE_QUEST then
-        return C_QuestLog.IsQuestFlaggedCompleted(self.questID)
+        return C_QuestLog.IsQuestFlaggedCompleted(self.questID), false
     end
+
+    return false, false
 end
 
 local isScheduled = false
@@ -110,9 +115,9 @@ function RewardMixin:GetConditionString(covenant)
 end
 
 local TEXTUREINFO = {margin={left=5, top=2, right=2}}
-function RewardMixin:Render(tooltip, covenant)
-    local collected = self:IsCollected()
-    if not collected then
+function RewardMixin:Render(tooltip, covenant, extra)
+    local collected, hasMore = self:IsCollected()
+    if not collected or (extra and hasMore) then
         tooltip:AddDoubleLine(self:GetRewardString(), self:GetConditionString(covenant), nil, nil, nil, 1, 1, 1)
         tooltip:AddTexture(self.itemIcon, TEXTUREINFO)
     end

@@ -28,7 +28,7 @@ function CFR:GameTooltip_AddRewards(tooltip, rewards)
         end
     end
 
-    if IsShiftKeyDown() then
+    if IsShiftKeyDown() then -- display unobtainable
         local num_specific_unobtainable_rewards = #rewards.specific_unobtainable
         local num_specific_unobtainable_known = rewards.specific_unobtainable_known
 
@@ -53,6 +53,24 @@ function CFR:GameTooltip_AddRewards(tooltip, rewards)
             tooltip:AddLine(ssr_line)
             for _, reward in ipairs(rewards.shared_unobtainable) do
                 reward:Render(tooltip, covenant)
+            end
+        end
+    elseif IsAltKeyDown() then -- display item which have more to collet
+        local specific_extra = rewards.specific_extra
+        if #specific_extra > 0 then
+            tooltip:AddLine(L.COVENANT_REWARDS_EXTRA)
+
+            for _, reward in ipairs(specific_extra) do
+                reward:Render(tooltip, covenant, true)
+            end
+        end
+
+        local shared_extra = rewards.shared_extra
+        if #shared_extra > 0 then
+            tooltip:AddLine(L.SHARED_REWARDS_EXTRA)
+
+            for _, reward in ipairs(shared_extra) do
+                reward:Render(tooltip, covenant, true)
             end
         end
     end

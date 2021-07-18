@@ -20,7 +20,7 @@
 locales/enUS.lua
 locales/deDE.lua
 
-reward.lua
+RewardMixin.lua
 data.lua
 
 core.lua
