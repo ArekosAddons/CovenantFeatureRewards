@@ -120,6 +120,28 @@ CFR.shared_rewards = {
             "Mikanikos",
         },
     }),
+    CFR:CreateReward(REWARD_TYPE_PET, { -- Sable
+        itemID = 180814,
+        speciesID = 2933,
+        theme = KYRIAN,
+
+        arena = "ACHIEVEMENT#14856", -- TODO
+        garden = 2,
+        visitors = { -- TODO
+            "Kleia and Pelagos",
+        },
+    }),
+    CFR:CreateReward(REWARD_TYPE_PET, { -- Brightscale Hatchling
+        itemID = 180815,
+        speciesID = 2931,
+        theme = KYRIAN,
+
+        arena = "", -- TODO
+        garden = 2,
+        visitors = { -- TODO
+
+        },
+    }),
     CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Temple Guard's Partisan
         itemID = 181228,
         theme = KYRIAN,
@@ -414,28 +436,6 @@ CFR.shared_rewards = {
         garden = 2,
         visitors = { -- TODO
             "Droman Aliothe",
-        },
-    }),
-    CFR:CreateReward(REWARD_TYPE_PET, { -- Sable
-        itemID = 180814,
-        speciesID = 2933,
-        theme = NIGHTFAE,
-
-        arena = "ACHIEVEMENT#14856", -- TODO
-        garden = 2,
-        visitors = { -- TODO
-            "Kleia and Pelagos",
-        },
-    }),
-    CFR:CreateReward(REWARD_TYPE_PET, { -- Brightscale Hatchling
-        itemID = 180815,
-        speciesID = 2931,
-        theme = NIGHTFAE,
-
-        arena = "", -- TODO
-        garden = 2,
-        visitors = { -- TODO
-
         },
     }),
     CFR:CreateReward(REWARD_TYPE_PET, { -- Dusty Sporeflutterer

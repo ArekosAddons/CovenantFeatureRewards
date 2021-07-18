@@ -64,7 +64,7 @@ function CFR:GetRewards(covenant, theme)
 
                     tinsert(rewards.specific, reward)
                     if canCollectMore then
-                        tinsert(rewards.specific_extra)
+                        tinsert(rewards.specific_extra, reward)
                     end
                 else
                     if reward:IsCollected() then
@@ -88,7 +88,7 @@ function CFR:GetRewards(covenant, theme)
 
                 tinsert(rewards.shared, reward)
                 if canCollectMore then
-                    tinsert(rewards.shared_extra)
+                    tinsert(rewards.shared_extra, reward)
                 end
             else
                 if reward:IsCollected() then
