@@ -30,6 +30,8 @@ function CFR:GetThemeForItem(itemID)
         or self.venthyr_items[itemID]
 end
 
+function CFR:GetThemeForVisitor(visitor)
+    return self.VISITOR_THEMES[visitor]
 end
 
 
