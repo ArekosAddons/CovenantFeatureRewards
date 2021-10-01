@@ -118,8 +118,6 @@ function CFR:GetRewardsForItem(itemID)
     item_cache[itemID] = rewards
     return rewards
 end
-    return rewards
-end
 
 function CFR:ResetCaches()
     wipe(rewards_cache)
