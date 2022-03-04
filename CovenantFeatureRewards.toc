@@ -1,2 +1,2 @@
-## Interface: 90100
+## Interface: 90200
 ## Title: Covenant feature: Rewards
