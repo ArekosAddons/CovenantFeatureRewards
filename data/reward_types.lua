@@ -6,4 +6,5 @@ CFR.REWARD_TYPES = {
     MOUNT = RAF_BENEFIT5, -- MOUNT translates to the verb, the noun is RAF_BENEFIT5
     WARDROBE = WARDROBE,
     QUEST = "Quest",
+    TOY = TOY,
 }

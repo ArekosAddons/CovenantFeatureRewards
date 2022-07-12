@@ -7,6 +7,7 @@ local REWARD_TYPE_PET = CFR.REWARD_TYPES.PET
 local REWARD_TYPE_MOUNT = CFR.REWARD_TYPES.MOUNT
 local REWARD_TYPE_WARDROBE = CFR.REWARD_TYPES.WARDROBE
 local REWARD_TYPE_QUEST = CFR.REWARD_TYPES.QUEST
+local REWARD_TYPE_TOY = CFR.REWARD_TYPES.TOY
 
 local KYRIAN = CFR.COVENANTS.KYRIAN
 local NECROLORD = CFR.COVENANTS.NECROLORD
@@ -24,6 +25,8 @@ function RewardMixin:IsCollected()
     elseif self.type == REWARD_TYPE_PET then
         local numCollected, limit = C_PetJournal.GetNumCollectedInfo(self.speciesID)
         return numCollected > 0, numCollected < limit
+    elseif self.type == REWARD_TYPE_TOY then
+        return PlayerHasToy(self.itemID)
     elseif self.type == REWARD_TYPE_WARDROBE then
         local _, sourceID = C_TransmogCollection.GetItemInfo(self.itemID)
         if sourceID then
