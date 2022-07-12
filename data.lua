@@ -68,6 +68,8 @@ CFR.covenant_specific = {
         CFR:CreateReward(REWARD_TYPE_QUEST,    { itemID = 181313, questID = 62420, garden = 1, }),
         -- Gulper Soul
         CFR:CreateReward(REWARD_TYPE_QUEST,    { itemID = 181314, questID = 62421, garden = 1, }),
+        -- Choofa's Call
+        CFR:CreateReward(REWARD_TYPE_TOY,      { itemID = 187705, garden = 2}),
     },
     [VENTHYR] = {
         -- Desire's Battle Gargon
