@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased] - ~
 ### Added
+ - Update TOC for patch 9.2.7
  - New Toy Choofa's Call (exits since 9.1)
  - Support Transmog API changes
 
