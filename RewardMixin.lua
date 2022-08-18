@@ -28,6 +28,10 @@ function RewardMixin:IsCollected()
     elseif self.type == REWARD_TYPE_TOY then
         return PlayerHasToy(self.itemID)
     elseif self.type == REWARD_TYPE_WARDROBE then
+        if C_TransmogCollection.PlayerHasTransmogByItemInfo(self.itemID) then
+            return true, false
+        end
+
         local _, sourceID = C_TransmogCollection.GetItemInfo(self.itemID)
         if sourceID then
             local _, _, _, _, isCollected = C_TransmogCollection.GetAppearanceSourceInfo(sourceID)
@@ -53,29 +57,20 @@ function RewardMixin:CanObtain()
         local canObtain = canObtainCache[self.itemID]
         if canObtain ~= nil then return canObtain end
 
-        local appearanceID = C_TransmogCollection.GetItemInfo(self.itemID)
-        local sources = C_TransmogCollection.GetAppearanceSources(appearanceID)
-        if sources and next(sources) then
-            local spec = GetItemSpecInfo(self.itemID)
+        local _, sourceID = C_TransmogCollection.GetItemInfo(self.itemID)
+        if sourceID then
+            local hasData, canCollect = C_TransmogCollection.PlayerCanCollectSource(sourceID)
 
-            if type(spec) == "table" then
-                if #spec == 0 then
-                    -- will not drop
-                    canObtain = false
-                else
-                    canObtain = true
-                end
-            else
-                -- skip caching when nil and reset rewards cache
-                if not isScheduled then
-                    isScheduled = true
-                    C_Timer.After(1, resetRewardsCache)
-                end
-                return true
+            if hasData then
+                canObtain = canCollect
             end
-        else
-            -- can't learn appearance
-            canObtain = false
+        elseif not isScheduled then
+            -- reset cache to check again
+            isScheduled = true
+            C_Timer.After(1, resetRewardsCache)
+
+            -- show as collectable until we got results
+            return true
         end
 
         canObtainCache[self.itemID] = canObtain
@@ -137,7 +132,11 @@ function CFR:CreateReward(rewardType, data)
         data.itemLink = item:GetItemLink()
         data.itemIcon = item:GetItemIcon()
 
-        GetItemSpecInfo(data.itemID)
+        -- poke transmog system
+        local _, sourceID = C_TransmogCollection.GetItemInfo(data.itemID)
+        if sourceID then
+            local _, _ = C_TransmogCollection.PlayerCanCollectSource(sourceID)
+        end
     end)
 
     return Mixin(data, RewardMixin)
