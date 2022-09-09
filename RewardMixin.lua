@@ -61,10 +61,21 @@ function RewardMixin:CanObtain()
         if sourceID then
             local hasData, canCollect = C_TransmogCollection.PlayerCanCollectSource(sourceID)
 
-            if hasData then
-                canObtain = canCollect
+            if hasData and canCollect then
+                local spec = GetItemSpecInfo(self.itemID)
+
+                if type(spec) == "table" then
+                    if #spec == 0 then
+                        -- will not drop
+                        canObtain = false
+                    else
+                        canObtain = true
+                    end
+                end
             end
-        elseif not isScheduled then
+        end
+
+        if canObtain == nil and not isScheduled then
             -- reset cache to check again
             isScheduled = true
             C_Timer.After(1, resetRewardsCache)
@@ -132,11 +143,12 @@ function CFR:CreateReward(rewardType, data)
         data.itemLink = item:GetItemLink()
         data.itemIcon = item:GetItemIcon()
 
-        -- poke transmog system
-        local _, sourceID = C_TransmogCollection.GetItemInfo(data.itemID)
-        if sourceID then
-            local _, _ = C_TransmogCollection.PlayerCanCollectSource(sourceID)
-        end
+        -- poke info systems
+        -- GetItemSpecInfo(data.itemID)
+        -- local _, sourceID = C_TransmogCollection.GetItemInfo(data.itemID)
+        -- if sourceID then
+        --     local _, _ = C_TransmogCollection.PlayerCanCollectSource(sourceID)
+        -- end
     end)
 
     return Mixin(data, RewardMixin)
