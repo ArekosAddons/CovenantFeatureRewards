@@ -1,0 +1,3 @@
+local ADDONNAME, CFR =  ...
+
+LibStub("AceEvent-3.0"):Embed(CFR)

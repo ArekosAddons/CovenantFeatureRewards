@@ -20,6 +20,8 @@
 locales/enUS.lua
 locales/deDE.lua
 
+event.lua
+
 data/covenants.lua
 data/reward_types.lua
 RewardMixin.lua
