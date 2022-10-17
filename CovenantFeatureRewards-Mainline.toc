@@ -24,6 +24,8 @@ event.lua
 
 data/covenants.lua
 data/reward_types.lua
+
+data/items.lua
 RewardMixin.lua
 data.lua
 
