@@ -132,24 +132,101 @@ function RewardMixin:Render(tooltip, covenant, extra)
     end
 end
 
-function CFR:CreateReward(rewardType, data)
-    data.type = rewardType
 
-    data.itemLink = RETRIEVING_ITEM_INFO
-    data.itemLink = "Interface\\Icons\\Inv_misc_questionmark"
+local waitlist = {}
+local function requestNextItem()
+    local itemID = next(waitlist)
+    if itemID then
+        C_Item.RequestLoadItemDataByID(itemID)
+    end
+end
+local function onEvent(event, itemID, success)
+    local data = waitlist[itemID]
+    if not data then
+        if next(waitlist) == nil then -- empty list, unregister event
+            CFR:UnregisterEvent(event)
+        end
+        return
+    end
 
-    local item = Item:CreateFromItemID(data.itemID)
-    item:ContinueOnItemLoad(function()
-        data.itemLink = item:GetItemLink()
-        data.itemIcon = item:GetItemIcon()
+    if success then
+        local _, itemLink, _, _, _, _, _, _, _, itemIcon = GetItemInfo(itemID)
+        data.itemLink = itemLink
+        data.itemIcon = itemIcon
 
         -- poke info systems
-        -- GetItemSpecInfo(data.itemID)
-        -- local _, sourceID = C_TransmogCollection.GetItemInfo(data.itemID)
+        -- GetItemSpecInfo(itemID)
+        -- local _, sourceID = C_TransmogCollection.GetItemInfo(itemID)
         -- if sourceID then
         --     local _, _ = C_TransmogCollection.PlayerCanCollectSource(sourceID)
         -- end
-    end)
+    else
+        -- remove invalid items
+        for i, k in ipairs(data.dest) do
+            if k == data then
+                tremove(data.dest, i)
+                break
+            end
+        end
+    end
+    data.dest = nil
 
-    return Mixin(data, RewardMixin)
+    waitlist[itemID] = nil
+    local nextItemID = next(waitlist)
+    if nextItemID then
+        C_Timer.After(0.1, requestNextItem)
+    else
+        CFR:UnregisterEvent(event)
+    end
+end
+local function startReqesting()
+    local itemID = next(waitlist)
+
+    if itemID then
+        CFR:RegisterEvent("ITEM_DATA_LOAD_RESULT", onEvent)
+
+        C_Timer.After(0.1, requestNextItem)
+    end
+end
+
+function CFR:AddReward(dest, rewardType, data)
+    if rewardType == nil then
+        geterrorhandler()(
+            string.format("CovenantFeatureRewards: Missing rewardType.\n\n%s",
+                debugstack(2)
+            )
+        )
+        return
+    end
+    if type(dest) ~= "table" then
+        geterrorhandler()(
+            string.format("CovenantFeatureRewards: Missing destination for a %s reward.\n\n%s",
+                rewardType,
+                debugstack(2)
+            )
+        )
+        return
+    end
+    if type(data) ~= "table" then
+        geterrorhandler()(
+            string.format("CovenantFeatureRewards: Missing data table for a %s reward.\n\n%s",
+                rewardType,
+                debugstack(2)
+            )
+        )
+        return
+    end
+
+    data.type = rewardType
+    data.itemLink = RETRIEVING_ITEM_INFO
+    data.itemIcon = "Interface\\Icons\\Inv_misc_questionmark"
+
+    data = Mixin(data, RewardMixin)
+    dest[#dest + 1] = data
+    data.dest = dest
+
+    if next(waitlist) == nil then
+        C_Timer.After(0, startReqesting)
+    end
+    waitlist[data.itemID] = data
 end

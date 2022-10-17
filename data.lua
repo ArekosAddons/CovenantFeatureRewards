@@ -13,49 +13,90 @@ local REWARD_TYPE_QUEST     = CFR.REWARD_TYPES.QUEST
 local REWARD_TYPE_TOY       = CFR.REWARD_TYPES.TOY
 
 
-
--- LOOKUP: speciesID: https://wowpedia.fandom.com/wiki/BattlePetSpeciesID
-
 -- Reward for specific covenants only
-CFR.covenant_specific = {
-    [KYRIAN] = {
-        -- Eternal Phalynx of Loyalty
-        CFR:CreateReward(REWARD_TYPE_MOUNT, { itemID = 180767, mountID = 1401, arena = "ACHIEVEMENT#14863" }), -- TODO: arena
-        -- Eternal Phalynx of Humility
-        CFR:CreateReward(REWARD_TYPE_MOUNT, { itemID = 180768, mountID = 1402, arena = "ACHIEVEMENT#14861" }), -- TODO: arena
-    },
-    [NECROLORD] = {
-        --
-        CFR:CreateReward(REWARD_TYPE_MOUNT, { itemID = 182078, mountID = 1409 }),
-        --
-        CFR:CreateReward(REWARD_TYPE_PET,   { itemID = 181282, speciesID = 2963 }),
-    },
-    [NIGHTFAE] = {
-        --
-        CFR:CreateReward(REWARD_TYPE_MOUNT,    { itemID = 180723, mountID = 1358, garden = 4 }),
-        -- Spirit Tender's Pack
-        CFR:CreateReward(REWARD_TYPE_WARDROBE, { itemID = 181310, theme = true, garden = 4, }),
-        --
-        CFR:CreateReward(REWARD_TYPE_MOUNT,    { itemID = 180414, mountID = 1355, garden = 2 }),
-        -- Spirit Tender's Bulb
-        CFR:CreateReward(REWARD_TYPE_WARDROBE, { itemID = 181306, garden = 2 }),
-        -- Snapper Soul
-        CFR:CreateReward(REWARD_TYPE_QUEST,    { itemID = 181313, questID = 62420, garden = 1, }),
-        -- Gulper Soul
-        CFR:CreateReward(REWARD_TYPE_QUEST,    { itemID = 181314, questID = 62421, garden = 1, }),
-        -- Choofa's Call
-        CFR:CreateReward(REWARD_TYPE_TOY,      { itemID = 187705, garden = 2}),
-    },
-    [VENTHYR] = {
-        -- Desire's Battle Gargon
-        CFR:CreateReward(REWARD_TYPE_MOUNT, { itemID = 182209, mountID = 1387, visitors = { "The Countess" } }), -- TODO: visitors
-    },
-}
+CFR.covenant_specific = {}
+do-- Kyrian only
+    local kyrian = {}
+
+    -- Eternal Phalynx of Loyalty
+    CFR:AddReward(kyrian, REWARD_TYPE_MOUNT,
+        { itemID = 180767, mountID = 1401, arena = "ACHIEVEMENT#14863" } -- TODO: arena
+    )
+    -- Eternal Phalynx of Humility
+    CFR:AddReward(kyrian, REWARD_TYPE_MOUNT,
+        { itemID = 180768, mountID = 1402, arena = "ACHIEVEMENT#14861" } -- TODO: arena
+    )
+
+    CFR.covenant_specific[KYRIAN] = kyrian
+end
+
+do-- Necrolord only
+    local necrolord = {}
+
+    -- Bonesewn Fleshroc
+    CFR:AddReward(necrolord, REWARD_TYPE_MOUNT,
+        { itemID = 182078, mountID = 1409 }
+    )
+    -- Mu'dud
+    CFR:AddReward(necrolord, REWARD_TYPE_PET,
+        { itemID = 181282, speciesID = 2963 }
+    )
+
+    CFR.covenant_specific[NECROLORD] = necrolord
+end
+
+do-- Nightfae only
+    local nightfae = {}
+
+    -- Enchanted Wakener's Runestag
+    CFR:AddReward(nightfae, REWARD_TYPE_MOUNT,
+        { itemID = 180723, mountID = 1358, garden = 4 }
+    )
+    -- Spirit Tender's Pack
+    CFR:AddReward(nightfae, REWARD_TYPE_WARDROBE,
+        { itemID = 181310, theme = true, garden = 4, }
+    )
+    -- Wakener's Runestag
+    CFR:AddReward(nightfae, REWARD_TYPE_MOUNT,
+        { itemID = 180414, mountID = 1355, garden = 2 }
+    )
+    -- Spirit Tender's Bulb
+    CFR:AddReward(nightfae, REWARD_TYPE_WARDROBE,
+        { itemID = 181306, garden = 2 }
+    )
+    -- Snapper Soul
+    CFR:AddReward(nightfae, REWARD_TYPE_QUEST,
+        { itemID = 181313, questID = 62420, garden = 1, }
+    )
+    -- Gulper Soul
+    CFR:AddReward(nightfae, REWARD_TYPE_QUEST,
+        { itemID = 181314, questID = 62421, garden = 1, }
+    )
+    -- Choofa's Call
+    CFR:AddReward(nightfae, REWARD_TYPE_TOY,
+        { itemID = 187705, garden = 2}
+    )
+
+    CFR.covenant_specific[NIGHTFAE] = nightfae
+end
+
+do-- Venthyr only
+    local venthyr = {}
+
+    -- Desire's Battle Gargon
+    CFR:AddReward(venthyr, REWARD_TYPE_MOUNT,
+        { itemID = 182209, mountID = 1387, visitors = { "The Countess" } } -- TODO: visitors
+    )
+
+    CFR.covenant_specific[VENTHYR] = venthyr
+end
+
 
 -- Rewards for all covenants
-CFR.shared_rewards = {
-    -- Kyrian themed
-    CFR:CreateReward(REWARD_TYPE_MOUNT, { -- Dauntless Duskrunner
+local shared_rewards = {}
+do-- Kyrian themed
+    -- Dauntless Duskrunner
+    CFR:AddReward(shared_rewards, REWARD_TYPE_MOUNT, {
         itemID = 181317,
         mountID = 1413,
         theme = KYRIAN,
@@ -66,8 +107,9 @@ CFR.shared_rewards = {
             "Mikanikos",
             "Polemarch Adrestes",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Bronze Ceremonial Targe
+    })
+    -- Bronze Ceremonial Targe
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 181227,
         theme = KYRIAN,
 
@@ -76,8 +118,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Mikanikos",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Broadbladed Severer
+    })
+    -- Broadbladed Severer
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 181231,
         theme = KYRIAN,
 
@@ -86,8 +129,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
 
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Final Arbiter's Gavel
+    })
+    -- Final Arbiter's Gavel
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 181235,
         theme = KYRIAN,
 
@@ -96,8 +140,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Mikanikos",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_PET, { -- Sable
+    })
+    -- Sable
+    CFR:AddReward(shared_rewards, REWARD_TYPE_PET, {
         itemID = 180814,
         speciesID = 2933,
         theme = KYRIAN,
@@ -107,8 +152,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Kleia and Pelagos",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_PET, { -- Brightscale Hatchling
+    })
+    -- Brightscale Hatchling
+    CFR:AddReward(shared_rewards, REWARD_TYPE_PET, {
         itemID = 180815,
         speciesID = 2931,
         theme = KYRIAN,
@@ -118,8 +164,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
 
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Temple Guard's Partisan
+    })
+    -- Temple Guard's Partisan
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 181228,
         theme = KYRIAN,
 
@@ -128,8 +175,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Polemarch Adrestes",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Tranquil's Censer
+    })
+    -- Tranquil's Censer
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 181229,
         theme = KYRIAN,
 
@@ -138,8 +186,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Sika",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Pugilist's Chakram
+    })
+    -- Pugilist's Chakram
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 181230,
         theme = KYRIAN,
 
@@ -151,8 +200,9 @@ CFR.shared_rewards = {
             "Sika",
             "Kleia and Pelagos",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Bellringer's Hammer
+    })
+    -- Bellringer's Hammer
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 181233,
         theme = KYRIAN,
 
@@ -161,8 +211,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Kleia and Pelagos",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Crossbow of Contemplative Calm
+    })
+    -- Crossbow of Contemplative Calm
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 181225,
         theme = KYRIAN,
 
@@ -171,8 +222,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Kleia and Pelagos",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Bronze Dual-Bladed Glaive
+    })
+    -- Bronze Dual-Bladed Glaive
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 181226,
         theme = KYRIAN,
 
@@ -184,8 +236,9 @@ CFR.shared_rewards = {
             "Sika",
             "Polemarch Adrestes",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Cupbearer's Claymore
+    })
+    -- Cupbearer's Claymore
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 181232,
         theme = KYRIAN,
 
@@ -197,8 +250,9 @@ CFR.shared_rewards = {
             "Sika",
             "Polemarch Adrestes",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Dutybound Spellblade
+    })
+    -- Dutybound Spellblade
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 181234,
         theme = KYRIAN,
 
@@ -207,10 +261,12 @@ CFR.shared_rewards = {
         visitors = { -- TODO
 
         },
-    }),
+    })
+end
 
-    -- Necrolord themed
-    CFR:CreateReward(REWARD_TYPE_MOUNT, { -- Gruesome Flayedwing
+do-- Necrolord themed
+    -- Gruesome Flayedwing
+    CFR:AddReward(shared_rewards, REWARD_TYPE_MOUNT, {
         itemID = 181300,
         mountID = 1408,
         theme = NECROLORD,
@@ -221,8 +277,9 @@ CFR.shared_rewards = {
             "Baroness Vashj",
             "Alexandros Mograine",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Bonejowl Ballista
+    })
+    -- Bonejowl Ballista
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 181320,
         theme = NECROLORD,
 
@@ -231,8 +288,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
 
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Bonebound Tome
+    })
+    -- Bonebound Tome
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 181322,
         theme = NECROLORD,
 
@@ -241,8 +299,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Baroness Vashj",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_PET, { -- Plaguelouse Larva
+    })
+    -- Plaguelouse Larva
+    CFR:AddReward(shared_rewards, REWARD_TYPE_PET, {
         itemID = 181264,
         speciesID = 2954,
         theme = NECROLORD,
@@ -252,8 +311,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Baroness Vashj",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_PET, { -- Corpulent Bonetusk
+    })
+    -- Corpulent Bonetusk
+    CFR:AddReward(shared_rewards, REWARD_TYPE_PET, {
         itemID = 181168,
         speciesID = 2945,
         theme = NECROLORD,
@@ -263,8 +323,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Grandmaster Vole",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Marrowfused Warglaive
+    })
+    -- Marrowfused Warglaive
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 181330,
         theme = NECROLORD,
 
@@ -276,8 +337,9 @@ CFR.shared_rewards = {
             "Baroness Vashj",
             "Grandmaster Vole",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Marrowfused Dagger
+    })
+    -- Marrowfused Dagger
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 181325,
         theme = NECROLORD,
 
@@ -286,8 +348,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Alexandros Mograine",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Marrowfused Sword
+    })
+    -- Marrowfused Sword
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 181328,
         theme = NECROLORD,
 
@@ -296,8 +359,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Grandmaster Vole",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Marrowfused Shield
+    })
+    -- Marrowfused Shield
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 181331,
         theme = NECROLORD,
 
@@ -306,8 +370,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Alexandros Mograine",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Bloodstained Hacksaw
+    })
+    -- Bloodstained Hacksaw
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 181326,
         theme = NECROLORD,
 
@@ -316,8 +381,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Plague Deviser Marileth",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Blightclutched Greatstaff
+    })
+    -- Blightclutched Greatstaff
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 181323,
         theme = NECROLORD,
 
@@ -326,8 +392,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Plague Deviser Marileth",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Marrowfused Claymore
+    })
+    -- Marrowfused Claymore
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 181329,
         theme = NECROLORD,
 
@@ -336,8 +403,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Grandmaster Vole",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Gem-Crowned Wand
+    })
+    -- Gem-Crowned Wand
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 181321,
         theme = NECROLORD,
 
@@ -346,8 +414,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Plague Deviser Marileth",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Spineforged Tenderizer
+    })
+    -- Spineforged Tenderizer
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 181327,
         theme = NECROLORD,
 
@@ -359,10 +428,12 @@ CFR.shared_rewards = {
             "Alexandros Mograine",
             "Grandmaster Vole",
         },
-    }),
+    })
+end
 
-    -- Nightfae themed
-    CFR:CreateReward(REWARD_TYPE_MOUNT, { -- Pale Acidmaw
+do-- Nightfae themed
+    -- Pale Acidmaw
+    CFR:AddReward(shared_rewards, REWARD_TYPE_MOUNT, {
         itemID = 180726,
         mountID = 1392,
         theme = NIGHTFAE,
@@ -373,8 +444,9 @@ CFR.shared_rewards = {
             "Hunt-Captain Korayn",
             "Lady Moonberry",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Grove Warden's Edge
+    })
+    -- Grove Warden's Edge
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 179509,
         theme = NIGHTFAE,
 
@@ -383,8 +455,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Hunt-Captain Korayn",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Songwood Staff
+    })
+    -- Songwood Staff
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 179516,
         theme = NIGHTFAE,
 
@@ -393,8 +466,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Lady Moonberry",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Grove Warden's Harvester
+    })
+    -- Grove Warden's Harvester
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 179533,
         theme = NIGHTFAE,
 
@@ -403,8 +477,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Hunt-Captain Korayn",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_PET, { -- Pearlwing Heron
+    })
+    -- Pearlwing Heron
+    CFR:AddReward(shared_rewards, REWARD_TYPE_PET, {
         itemID = 180628,
         speciesID = 2923,
         theme = NIGHTFAE,
@@ -414,8 +489,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Droman Aliothe",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_PET, { -- Dusty Sporeflutterer
+    })
+    -- Dusty Sporeflutterer
+    CFR:AddReward(shared_rewards, REWARD_TYPE_PET, {
         itemID = 180639,
         speciesID = 2912,
         theme = NIGHTFAE,
@@ -425,8 +501,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
 
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Nightwillow Barb
+    })
+    -- Nightwillow Barb
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 179499,
         theme = NIGHTFAE,
 
@@ -435,8 +512,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Choofa",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Grove Warden's Maul
+    })
+    -- Grove Warden's Maul
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 179538,
         theme = NIGHTFAE,
 
@@ -445,8 +523,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Droman Aliothe",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Elderwood Barrier
+    })
+    -- Elderwood Barrier
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 179605,
         theme = NIGHTFAE,
 
@@ -458,8 +537,9 @@ CFR.shared_rewards = {
             "Droman Aliothe",
             "Lady Moonberry",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Ripvine Saber
+    })
+    -- Ripvine Saber
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 179514,
         theme = NIGHTFAE,
 
@@ -468,8 +548,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Droman Aliothe",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Nightwillow Shortbow
+    })
+    -- Nightwillow Shortbow
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 179585,
         theme = NIGHTFAE,
 
@@ -478,8 +559,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Hunt-Captain Korayn",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { --  Elderwood Gavel
+    })
+    --  Elderwood Gavel
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 179548,
         theme = NIGHTFAE,
 
@@ -491,8 +573,9 @@ CFR.shared_rewards = {
             "Hunt-Captain Korayn",
             "Lady Moonberry",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Heartwood Stem
+    })
+    -- Heartwood Stem
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 179563,
         theme = NIGHTFAE,
 
@@ -501,10 +584,12 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Choofa",
         },
-    }),
+    })
+end
 
-    -- Venthyr themed
-    CFR:CreateReward(REWARD_TYPE_MOUNT, { -- Silvertip Dredwing
+do-- Venthyr theme
+    -- Silvertip Dredwing
+    CFR:AddReward(shared_rewards, REWARD_TYPE_MOUNT, {
         itemID = 181316,
         mountID = 1376,
         theme = VENTHYR,
@@ -514,8 +599,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
 
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Redelev House Foil
+    })
+    -- Redelev House Foil
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 180958,
         theme = VENTHYR,
 
@@ -524,8 +610,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "The Countess",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Silver-Bladed Ritual Dagger
+    })
+    -- Silver-Bladed Ritual Dagger
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 180961,
         theme = VENTHYR,
 
@@ -534,8 +621,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "The Countess",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Sterling-Silver Cudgel
+    })
+    -- Sterling-Silver Cudgel
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 180962,
         theme = VENTHYR,
 
@@ -544,8 +632,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Rendle and Cudgelface",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_PET, { -- Violet Dredwing Pup
+    })
+    -- Violet Dredwing Pup
+    CFR:AddReward(shared_rewards, REWARD_TYPE_PET, {
         itemID = 180603,
         speciesID = 2904,
         theme = VENTHYR,
@@ -555,8 +644,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
 
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_PET, { -- Bloodfeaster Spiderling
+    })
+    -- Bloodfeaster Spiderling
+    CFR:AddReward(shared_rewards, REWARD_TYPE_PET, {
         itemID = 181315,
         speciesID = 2965,
         theme = VENTHYR,
@@ -566,8 +656,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Rendle and Cudgelface",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Crypt Watcher's Spire
+    })
+    -- Crypt Watcher's Spire
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 180954,
         theme = VENTHYR,
 
@@ -576,8 +667,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Cryptkeeper Kassir",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Dredger Anklebiter
+    })
+    -- Dredger Anklebiter
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 180959,
         theme = VENTHYR,
 
@@ -586,8 +678,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Rendle and Cudgelface",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Shiny-Metal Topped Basher
+    })
+    -- Shiny-Metal Topped Basher
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 180960,
         theme = VENTHYR,
 
@@ -596,8 +689,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Stonehead",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Ember Court Barrier
+    })
+    -- Ember Court Barrier
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 180964,
         theme = VENTHYR,
 
@@ -609,8 +703,9 @@ CFR.shared_rewards = {
             "The Countess",
             "Stonehead",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Stonewing Halberd
+    })
+    -- Stonewing Halberd
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 180955,
         theme = VENTHYR,
 
@@ -619,8 +714,9 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Stonehead",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Axeblade Blunderbuss
+    })
+    -- Axeblade Blunderbuss
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 180956,
         theme = VENTHYR,
 
@@ -631,8 +727,9 @@ CFR.shared_rewards = {
             "Cryptkeeper Kassir",
             "Rendle and Cudgelface",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Batwing Glaive
+    })
+    -- Batwing Glaive
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 180957,
         theme = VENTHYR,
 
@@ -644,8 +741,9 @@ CFR.shared_rewards = {
             "Cryptkeeper Kassir",
             "Rendle and Cudgelface",
         },
-    }),
-    CFR:CreateReward(REWARD_TYPE_WARDROBE, { -- Crypt Keeper's Vessel
+    })
+    -- Crypt Keeper's Vessel
+    CFR:AddReward(shared_rewards, REWARD_TYPE_WARDROBE, {
         itemID = 180963,
         theme = VENTHYR,
 
@@ -654,5 +752,6 @@ CFR.shared_rewards = {
         visitors = { -- TODO
             "Cryptkeeper Kassir",
         },
-    }),
-}
+    })
+end
+CFR.shared_rewards = shared_rewards
