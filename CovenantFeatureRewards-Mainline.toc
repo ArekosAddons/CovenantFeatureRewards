@@ -1,4 +1,4 @@
-## Interface: 90207
+## Interface: 100000
 ## Title: Covenant feature: Rewards
 ## Notes: Shows which rewards you can get from your covenant feature
 ## Version: 0.1.13
@@ -26,6 +26,7 @@ data/covenants.lua
 data/reward_types.lua
 
 data/items.lua
+
 RewardMixin.lua
 data.lua
 
