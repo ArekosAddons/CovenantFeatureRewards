@@ -1,7 +1,7 @@
 ## Interface: 100000
 ## Title: Covenant feature: Rewards
 ## Notes: Shows which rewards you can get from your covenant feature
-## Version: 0.1.13
+## Version: 0.1.14
 
 ## Author: Areko
 ## SavedVariables: CovenantSpecialsRewardsDB
