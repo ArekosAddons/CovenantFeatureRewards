@@ -4,7 +4,6 @@
 ## Version: 0.1.14
 
 ## Author: Areko
-## SavedVariables: CovenantSpecialsRewardsDB
 ## LoadManagers: AddonLoader
 ## X-LoadOn-Always: delayed
 #@do-not-package@
