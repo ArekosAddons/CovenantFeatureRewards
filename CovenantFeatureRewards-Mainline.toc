@@ -1,7 +1,7 @@
 ## Interface: 100002
 ## Title: Covenant feature: Rewards
 ## Notes: Shows which rewards you can get from your covenant feature
-## Version: 0.1.14
+## Version: 0.1.15
 
 ## Author: Areko
 ## LoadManagers: AddonLoader
